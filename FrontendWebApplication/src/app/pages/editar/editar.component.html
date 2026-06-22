@@ -1,0 +1,26 @@
+<div class="fade-in">
+  <div style="margin-bottom: 1.5rem;">
+    <h1 style="font-size: 1.875rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 0.25rem;">Editar Funcionário</h1>
+    <p style="color: var(--text-secondary); font-size: 0.875rem;">Atualize as informações cadastrais do colaborador.</p>
+  </div>
+
+  @if (loading) {
+    <div class="loader-container">
+      <div class="spinner"></div>
+      <p>Carregando informações do colaborador...</p>
+    </div>
+  } @else if (funcionario) {
+    <app-funcionario-form 
+      [funcionarioDados]="funcionario" 
+      btnTitulo="Atualizar Cadastro" 
+      btnAcao="Salvar Alterações" 
+      (onSubmit)="editarFuncionario($event)"
+    ></app-funcionario-form>
+  } @else {
+    <div class="error-container glass-card">
+      <h3>Erro ao carregar dados</h3>
+      <p>Não foi possível carregar os dados deste funcionário.</p>
+      <a routerLink="/" class="btn btn-primary" style="margin-top: 1rem;">Voltar para Início</a>
+    </div>
+  }
+</div>

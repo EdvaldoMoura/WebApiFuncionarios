@@ -1,0 +1,14 @@
+<div class="fade-in">
+  <div style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+    <div>
+      <h1 style="font-size: 1.875rem; font-weight: 800; tracking: -0.025em; margin-bottom: 0.25rem;">Novo Funcionário</h1>
+      <p style="color: var(--text-secondary); font-size: 0.875rem;">Registre um novo colaborador no sistema StaffSync.</p>
+    </div>
+  </div>
+
+  <app-funcionario-form 
+    btnTitulo="Dados do Funcionário" 
+    btnAcao="Cadastrar Colaborador" 
+    (onSubmit)="criarFuncionario($event)"
+  ></app-funcionario-form>
+</div>

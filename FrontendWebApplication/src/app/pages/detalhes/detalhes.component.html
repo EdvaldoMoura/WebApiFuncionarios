@@ -1,0 +1,111 @@
+<div class="fade-in">
+  <!-- Page Header -->
+  <div class="detail-header-container">
+    <div>
+      <a routerLink="/" class="back-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Voltar para a lista
+      </a>
+      <h1 class="page-title">Detalhes do Funcionário</h1>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="loader-container">
+      <div class="spinner"></div>
+      <p>Carregando informações...</p>
+    </div>
+  } @else if (funcionario) {
+    <div class="glass-card detail-card slide-up">
+      <!-- Card Header Profile Info -->
+      <div class="profile-header">
+        <div class="avatar-glow">
+          <div class="avatar">
+            {{ funcionario.nome.charAt(0) }}{{ funcionario.sobrenome.charAt(0) }}
+          </div>
+        </div>
+        <div class="profile-text">
+          <h2>{{ funcionario.nome }} {{ funcionario.sobrenome }}</h2>
+          <div class="status-badge-container">
+            @if (funcionario.status) {
+              <span class="badge badge-success">Ativo</span>
+            } @else {
+              <span class="badge badge-danger">Inativo</span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Details Grid -->
+      <div class="details-grid">
+        <div class="detail-item">
+          <span class="detail-label">ID do Registro</span>
+          <span class="detail-value highlight-text">#{{ funcionario.id }}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Departamento</span>
+          <span class="detail-value">{{ getDepartamento(funcionario.departamento) }}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Turno</span>
+          <span class="detail-value">{{ getTurno(funcionario.turno) }}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Data de Cadastro</span>
+          <span class="detail-value">
+            {{ funcionario.dataCriacao ? (funcionario.dataCriacao | date: 'dd/MM/yyyy HH:mm') : 'Não registrada' }}
+          </span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Última Alteração</span>
+          <span class="detail-value">
+            {{ (funcionario.dataAlteracao || funcionario.dataAtualizacao) ? ((funcionario.dataAlteracao || funcionario.dataAtualizacao) | date: 'dd/MM/yyyy HH:mm') : 'Não alterada' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Action Buttons inside Card -->
+      <div class="actions-panel">
+        <a [routerLink]="['/editar', funcionario.id]" class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+          </svg>
+          Editar Cadastro
+        </a>
+
+        <button (click)="alternarStatus()" class="btn btn-secondary">
+          @if (funcionario.status) {
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+            </svg>
+            Inativar Colaborador
+          } @else {
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Ativar Colaborador
+          }
+        </button>
+
+        <button (click)="excluir()" class="btn btn-danger">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+          Excluir Registro
+        </button>
+      </div>
+    </div>
+  } @else {
+    <div class="error-container glass-card">
+      <h3>Não foi possível carregar</h3>
+      <p>O funcionário solicitado não foi localizado no sistema.</p>
+      <a routerLink="/" class="btn btn-primary" style="margin-top: 1rem;">Voltar para Início</a>
+    </div>
+  }
+</div>

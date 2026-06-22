@@ -1,0 +1,103 @@
+<div class="fade-in">
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <div>
+      <h1 class="dashboard-title">Funcionários Registrados</h1>
+      <p class="dashboard-subtitle">Gerencie os colaboradores, departamentos, turnos e status de contratação.</p>
+    </div>
+  </div>
+
+  <!-- Controls Panel (Search & Register) -->
+  <div class="controls-panel glass-card">
+    <div class="search-box">
+      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      <input 
+        type="text" 
+        placeholder="Qual registro buscar? Digite o nome..." 
+        (input)="search($event)"
+        class="search-input"
+      >
+    </div>
+
+    <a routerLink="/cadastro" class="btn btn-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+      </svg>
+      Cadastrar Funcionário
+    </a>
+  </div>
+
+  <!-- Table Container -->
+  @if (funcionarios.length > 0) {
+    <div class="table-container slide-up">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th>Nome</th>
+            <th>Sobrenome</th>
+            <th>Departamento</th>
+            <th>Turno</th>
+            <th style="text-align: right; padding-right: 2rem;">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (dados of funcionarios; track dados.id) {
+            <tr>
+              <td>
+                @if (dados.status) {
+                  <span class="badge badge-success">Ativo</span>
+                } @else {
+                  <span class="badge badge-danger">Inativo</span>
+                }
+              </td>
+              <td>{{ dados.nome }}</td>
+              <td>{{ dados.sobrenome }}</td>
+              <td>
+                <span class="badge badge-info">{{ getDepartamento(dados.departamento) }}</span>
+              </td>
+              <td>
+                <span class="badge badge-warning">{{ getTurno(dados.turno) }}</span>
+              </td>
+              <td>
+                <div class="actions-wrapper">
+                  <a [routerLink]="['/detalhes', dados.id]" class="btn btn-secondary btn-icon" title="Ver Detalhes">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    Detalhes
+                  </a>
+                  
+                  <a [routerLink]="['/editar', dados.id]" class="btn btn-secondary btn-icon" title="Editar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                    Editar
+                  </a>
+                  
+                  <button (click)="excluirFuncionario(dados.id!)" class="btn btn-danger btn-icon" title="Excluir">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    Excluir
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <div class="empty-state glass-card slide-up">
+      <svg class="empty-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+      </svg>
+      <h3>Nenhum funcionário encontrado</h3>
+      <p>Cadastre um novo colaborador ou ajuste seu termo de busca.</p>
+    </div>
+  }
+</div>
